@@ -1,0 +1,22 @@
+Maps:
+  # A placeholder item used while in trader menu
+  # player has to right click the item in main hand to reveal the map
+  # can apply custom model data to represent it as a map. Use "Model" option for each map
+  # Id is common for all maps
+  Id: lime_dye
+
+  village_map:
+    Model: 101
+    # the type of structure that has to be located
+    Type: VILLAGE
+
+    # display and lore that will be shown in tooltips of map
+    # supports minecraft color and hex color codes 
+    Display: "&eVillage Map"
+    Lore:
+      - ""
+      - "&#e69900 Dont miss those trades"
+  igloo_map:
+    Type: IGLOO
+    Display: "&eIgloo Map"    
+       

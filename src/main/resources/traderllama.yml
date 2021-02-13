@@ -1,0 +1,50 @@
+TraderLlama:
+
+
+  # worlds in which trader llama will not spawn
+  disabledWorlds: []
+
+  # if set to true trader llama will spawn with carpet decor that are biome dependent
+  biomeDependentCarpets: true
+
+  # if set to true trader llama will spawn with chest equiped
+  equipChest: true
+
+  # the probability of llama spawning with chest equiped and the chest containing the loottable given in "llamaChestLootTable"
+  # if set to 0 llama will not spawn with any chests equiped 
+  # if set to 0.5, there is a 50% chance of llama spawning with chest equiped
+  # if set to 1, llama will always spawn with chest equiped
+  # only works if equipChest option is set to true
+  Chance: 1
+
+  # if set to true trader llama will attack the player who is try to open the LlamaChest
+  # requires equipChest option to true
+  canAttack: true
+
+  # various loottables that will randomly selected when trader llama spawns
+  # only works if equipChest option is set to true
+  llamaChestLootTable:
+    1:
+      Size: 12
+      Items:
+      - 3 WHEAT
+      - 4 STICK
+      - 1 COAL
+      - 2 BEETROOT_SEEDS
+    2: 
+      Size: 9
+      Items:
+      - 4 PAPER
+      - 1 MILK_BUCKET
+      - 2 APPLE
+      - 3 OAK_SAPLING
+      - 1 BREAD
+    3:
+      Size: 15
+      Items:
+      - 2 GLASS_BOTTLE
+      - 1 WATER_BUCKET
+      - 1 SPRUCE_SAPLING
+      - 3 PAPER
+      - 1 KELP
+       

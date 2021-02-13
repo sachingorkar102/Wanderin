@@ -1,0 +1,28 @@
+WanderingTrader:
+
+
+  # worlds in which trader will not spawn
+  disabledWorlds: []
+
+  # weather to keep wandering trader's vanilla trades or not
+  KeepVanillaTrades: true
+
+  # max trades that will be randomly selected from the trades give below 
+  # vanilla trades are not considered
+  MaxTrades: 6
+
+  # list of trades that will displayed in trader's trade menu
+  # supports mythic items too use: mmitem{itemname}
+  # for maps, use the map name directly as given in examples
+  Trades:
+    1:
+      Item1: 10 EMERALD
+      Item2: 1 COMPASS
+      Result: village_map
+      MaxUses: 1
+    2:
+      Item1: 5 EMERALD
+      Item2: 1 COMPASS
+      Result: igloo_map
+      MaxUses: 1  
+      

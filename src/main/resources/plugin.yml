@@ -1,0 +1,27 @@
+name: wanderin
+version: 0.1
+author: sachingorkar
+api-version: 1.16
+main: me.sachin.wanderin
+description: This plugin does so much stuff it can't be contained!
+softdepend:
+  - MythicMobs
+commands:
+  wanderin:
+    aliases: [wi]
+permissions:
+  wanderin.command.reload:
+    description: allows use of /wanderin reload command
+    default: op
+  wanderin.command.give:
+    description: gives player a explorer map
+    default: op
+  wanderin.command.help:
+    description: displays all command list for wanderin plugin
+    default: op  
+  wanderin.command.*:
+    description: gives access to all wanderin commands
+    deafult: op
+    children:
+      wanderin.command.reload: true
+      wanderin.command.give: true    
