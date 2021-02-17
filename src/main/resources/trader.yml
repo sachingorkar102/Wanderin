@@ -4,8 +4,13 @@ WanderingTrader:
   # worlds in which trader will not spawn
   disabledWorlds: []
 
-  # weather to keep wandering trader's vanilla trades or not
-  KeepVanillaTrades: true
+  # list of trade that will be removed from trader
+  # use all to disable all vanilla trades
+  # a list of all valid trade items can be found on https://www.spigotmc.org/resources/88984/
+  blackListVanillaTrades:
+    # - ALL
+    - oak_sapling
+    - pufferfish_bucket
 
   # max trades that will be randomly selected from the trades give below 
   # vanilla trades are not considered

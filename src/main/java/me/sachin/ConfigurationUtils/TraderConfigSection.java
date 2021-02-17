@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,11 +36,27 @@ public class TraderConfigSection {
     private static List<String> tradeList;
     private static boolean unLoadedTrades = false;
     private static boolean keepVanillTrades;
+    private static List<String> disabledVanillaTrades = new ArrayList<>();
     private static boolean isMythicItem;
     private static int Maxuses;
 
     private static ItemStack MythicItemStack;
     private static ConsoleUtils console = new ConsoleUtils();
+
+
+    public static List<String> getDisabledVanillaTrades() {
+        try {
+            disabledVanillaTrades = getTraderConfig().getStringList("blackListVanillaTrades");
+            List<String> upperCaseList = new ArrayList<>();
+            if(disabledVanillaTrades.isEmpty()){
+                return null;
+            }
+            disabledVanillaTrades.forEach(s -> upperCaseList.add(s.toUpperCase()));
+            return upperCaseList;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     
     public static int getMaxuses(String name) {
@@ -56,6 +73,7 @@ public class TraderConfigSection {
 
     public static boolean getisMythicItem(String name) {
         String itemName = name.replace("mmitem", "").replace("{", "").replace("}", "");
+        
         try {
             Optional<MythicItem> itemOpt = MythicMobs.inst().getItemManager().getItem(itemName);
             isMythicItem = true;
@@ -87,35 +105,49 @@ public class TraderConfigSection {
     }
 
     public static List<MerchantRecipe> getRecipeList(Entity entity) {
-        if(!unLoadedTrades){
-            WanderingTrader trader = (WanderingTrader) entity;
-            Merchant merchant = (Merchant) trader;
-            if(!recipeList.isEmpty()) recipeList.clear();
-            List<String> tradesnumber = getTradeList();
-            for (String string : tradesnumber) {
-                int maxeuses = getMaxuses(string);
-                MerchantRecipe recipe = new MerchantRecipe(getResult(entity,string), maxeuses);
-                recipe.addIngredient(getItem1(string));
-                if(getItem2(string) != null){
-                    // System.out.println(getItem2(string));
-                    recipe.addIngredient(getItem2(string));
-                }
-                recipeList.add(recipe);
+        WanderingTrader trader = (WanderingTrader) entity;
+        List<MerchantRecipe> testlist = new ArrayList<>();
+        List<MerchantRecipe> defaultRecipes = trader.getRecipes();
+        List<MerchantRecipe> newrecipelist = new ArrayList<>();
+        List<String> disabledRecipes = getDisabledVanillaTrades();
+        if(!recipeList.isEmpty()) recipeList.clear();
+        List<String> tradesnumber = getTradeList();
+        for (String string : tradesnumber) {
+            int maxeuses = getMaxuses(string);
+            MerchantRecipe recipe = new MerchantRecipe(getResult(entity,string), maxeuses);
+            recipe.addIngredient(getItem1(string));
+            if(getItem2(string) != null){
+                // System.out.println(getItem2(string));
+                recipe.addIngredient(getItem2(string));
             }
-            int maxuses = TraderOptionConfig.getMaxTrades();
-            Collections.shuffle(recipeList);
-            recipeList = recipeList.subList(0, maxuses);
-
-            if(getVanillaTrades()){
-                List<MerchantRecipe> newrecipelist = Stream.of(merchant.getRecipes(),recipeList).flatMap(Collection::stream)
+            recipeList.add(recipe);
+        }
+        int maxuses = TraderOptionConfig.getMaxTrades();
+        Collections.shuffle(recipeList);
+        if(disabledRecipes != null){
+            if(disabledRecipes.get(0).equalsIgnoreCase("all")){
+                return recipeList;
+            }
+            else{
+                testlist = defaultRecipes.stream().filter(r -> {
+                    if(disabledRecipes.contains(r.getResult().getType().name())){
+                        return false;
+                    }else{
+                        return true;
+                    } 
+                }).collect(Collectors.toList());
+                newrecipelist = Stream.of(testlist,recipeList).flatMap(Collection::stream)
                 .collect(Collectors.toList());
                 return newrecipelist;
             }
         }
-        return recipeList;
+        recipeList = recipeList.subList(0, maxuses);
+        newrecipelist = Stream.of(defaultRecipes,recipeList).flatMap(Collection::stream)
+        .collect(Collectors.toList());
+        return newrecipelist;
     }
 
-
+    
     public static ItemStack getItem1(String tradeSection) {
         ItemStack Item1 = null;
         if(!unLoadedTrades){
@@ -131,8 +163,10 @@ public class TraderConfigSection {
                     itemName = nameAndAmmount.get(0);
                     amount = 1;
                 }
-                if(getisMythicItem(itemName)){
-                    return getMythicItemStack(itemName);
+                if(itemName.contains("mmitem{}")){
+                    if(getisMythicItem(itemName)) {
+                        return getMythicItemStack(itemName);
+                    }
                 }
                 Item1 = new ItemStack(Material.matchMaterial(itemName),amount);
             } catch (Exception e) {
@@ -149,17 +183,19 @@ public class TraderConfigSection {
                 try {
                     String name = getTrades().getConfigurationSection(tradeSection).getString("Item2");
                     List<String> nameAndAmmount = Arrays.asList(name.split(" "));
-                String itemName;
-                int amount;
-                if(nameAndAmmount.size() == 2){
-                    itemName = nameAndAmmount.get(1);
-                    amount = Integer.parseInt(nameAndAmmount.get(0));
-                }else{
-                    itemName = nameAndAmmount.get(0);
-                    amount = 1;
-                }
-                    if(getisMythicItem(itemName)){
-                        return getMythicItemStack(itemName);
+                    String itemName;
+                    int amount;
+                    if(nameAndAmmount.size() == 2){
+                        itemName = nameAndAmmount.get(1);
+                        amount = Integer.parseInt(nameAndAmmount.get(0));
+                    }else{
+                        itemName = nameAndAmmount.get(0);
+                        amount = 1;
+                    }
+                    if(itemName.contains("mmitem{}")){
+                        if(getisMythicItem(itemName)) {
+                            return getMythicItemStack(itemName);
+                        }
                     }
                     Item2 = new ItemStack(Material.matchMaterial(itemName),amount);
                 } catch (Exception e) {
@@ -188,8 +224,10 @@ public class TraderConfigSection {
                     amount = 1;
                 }
 
-                if(getisMythicItem(name)){
-                   return getMythicItemStack(name);
+                if(itemName.contains("mmitem{}")){
+                    if(getisMythicItem(itemName)) {
+                        return getMythicItemStack(itemName);
+                    }
                 }
                 if(MapsSection.getLoadedMapsList().contains(name)){
                     return mapStack(entity, name);

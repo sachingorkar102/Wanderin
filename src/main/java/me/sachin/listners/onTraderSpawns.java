@@ -29,6 +29,7 @@ public class onTraderSpawns implements Listener{
         }
         WanderingTrader trader = (WanderingTrader) e.getEntity();
         Merchant merchant = (Merchant) trader;
+
         List<MerchantRecipe> r = TraderConfigSection.getRecipeList(e.getEntity());
         merchant.setRecipes(r);
     }

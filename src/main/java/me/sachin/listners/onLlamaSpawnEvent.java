@@ -97,8 +97,8 @@ public class onLlamaSpawnEvent implements Listener {
         else if(Arrays.asList(Biome.SNOWY_BEACH,Biome.SNOWY_MOUNTAINS,Biome.SNOWY_TAIGA,Biome.SNOWY_TAIGA_HILLS,Biome.SNOWY_TAIGA_MOUNTAINS,Biome.SNOWY_TUNDRA).contains(biome)) return Material.WHITE_CARPET;
         else if(Arrays.asList(Biome.SAVANNA,Biome.SAVANNA_PLATEAU).contains(biome)) return Material.YELLOW_CARPET;
         else if(Arrays.asList(Biome.ICE_SPIKES).contains(biome)) return Material.CYAN_CARPET;
-        else if(Arrays.asList().contains(biome)) return Material.BLUE_CARPET;
-        else if(Arrays.asList(Biome.GRAVELLY_MOUNTAINS,Biome.MODIFIED_GRAVELLY_MOUNTAINS).contains(biome)) return Material.GRAY_CARPET;
+        else if(Arrays.asList(Biome.OCEAN,Biome.COLD_OCEAN,Biome.DEEP_OCEAN,Biome.WARM_OCEAN).contains(biome)) return Material.BLUE_CARPET;
+        else if(Arrays.asList(Biome.GRAVELLY_MOUNTAINS,Biome.MODIFIED_GRAVELLY_MOUNTAINS).contains(biome)) return Material.LIGHT_GRAY_CARPET;
         else if(Arrays.asList(Biome.SWAMP,Biome.SWAMP_HILLS).contains(biome)) return Material.BROWN_CARPET;
         else if(Arrays.asList(Biome.BIRCH_FOREST,Biome.BIRCH_FOREST_HILLS,Biome.TALL_BIRCH_HILLS,Biome.TALL_BIRCH_FOREST).contains(biome)) return Material.WHITE_CARPET;
         else if(Arrays.asList(Biome.FOREST,Biome.DARK_FOREST,Biome.DARK_FOREST_HILLS).contains(biome)) return Material.GREEN_CARPET;

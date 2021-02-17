@@ -50,10 +50,12 @@ public class LlamaLootGen {
             }
             ItemStack mainItem;
             amounts.add(maxAmount);
-            if(TraderConfigSection.getisMythicItem(name)){
-                mainItem = TraderConfigSection.getMythicItemStack(name);
-                itemlist.add(mainItem);
-                continue;
+            if(name.contains("mmitem{}")){
+                if(TraderConfigSection.getisMythicItem(name)){
+                    mainItem = TraderConfigSection.getMythicItemStack(name);
+                    itemlist.add(mainItem);
+                    continue;
+                }
             }
             try {
                 mainItem = new ItemStack(Material.matchMaterial(name), 1);

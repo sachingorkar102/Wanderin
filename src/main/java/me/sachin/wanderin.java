@@ -18,6 +18,11 @@ import me.sachin.utils.ConsoleUtils;
 
 public final class wanderin extends JavaPlugin{
 
+    /*
+    Author: Sachin gorkar
+    Discord: sachin#8481
+    */
+
 
     private static wanderin plugin;
     ConsoleUtils console = new ConsoleUtils();
